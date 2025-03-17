@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Example2 = () => {
@@ -12,7 +13,7 @@ const Example2 = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          data.forEach((item, index) => {
+          data.forEach((item: any) => {
             item.department = item.department.replace(/_/g, " ");
             if (item.hair) {
               item.hair = Object.entries(item.hair).map(([color, count]) => ({
