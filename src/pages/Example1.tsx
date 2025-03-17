@@ -82,6 +82,8 @@ const Example1 = () => {
   };
 
   useEffect(() => {
+    console.log(`🚀 ~ useEffect ~ Page Example 1 : `, "Page Example 1");
+
     setList(datas.current);
   }, []);
 

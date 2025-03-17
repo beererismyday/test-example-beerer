@@ -7,7 +7,7 @@ const Example2 = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   const getData = async () => {
     await fetch(`${apiUrl}/users`)
       .then((response) => response.json())
@@ -21,7 +21,6 @@ const Example2 = () => {
               }));
             }
           });
-          console.log(`🚀 ~ data.forEach ~ data : `, data);
           setLoading(false);
           setDatas(data);
         }
@@ -41,7 +40,7 @@ const Example2 = () => {
         <div className="w-full h-fit grid grid-flow-col-dense auto-cols-auto justify-between">
           <button
             className="ring-blue-400 ring-2 px-6 py-3 text-base text-blue-400 rounded-2xl hover:shadow-xl cursor-pointer hover:text-white hover:bg-blue-400"
-            onClick={() => navigate("/example1")}>
+            onClick={() => navigate("/")}>
             Example 1
           </button>
           <h1 className="text-left text-2xl font-semibold content-center text-zinc-900">
