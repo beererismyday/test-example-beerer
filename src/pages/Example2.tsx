@@ -58,19 +58,19 @@ const Example2 = () => {
               <div
                 key={index}
                 className="justify-start grid grid-flow-row-dense auto-rows-auto w-full py-8 px-5 hover:shadow-xl hover:bg-linear-to-bl from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl">
-                <h1 className="text-lg font-semibold text-left">
+                <h1 className="text-xl font-semibold text-left">
                   {res.department}
                 </h1>
                 <ul className="list-disc pl-6 text-left">
-                  <li>Male : {res.data.male}</li>
-                  <li>Female : {res.data.female}</li>
-                  <li>Age rage : {res.data.ageRange}</li>
+                  <li className="hover:font-bold">Male : {res.data.male}</li>
+                  <li className="hover:font-bold">Female : {res.data.female}</li>
+                  <li className="hover:font-bold">Age rage : {res.data.ageRange}</li>
                   <li>
                     Hair :
                     <ul className="list-decimal list-inside">
                       {Object.entries(res.data.hair).map(
                         ([color, count], index2) => (
-                          <li key={index2}>{`${color} : ${count}`}</li>
+                          <li key={index2} className="hover:font-bold">{`${color} : ${count}`}</li>
                         )
                       )}
                     </ul>
@@ -80,7 +80,7 @@ const Example2 = () => {
                     <ul className="list-decimal list-inside">
                       {Object.entries(res.data.addressUser).map(
                         ([name, value], index2) => (
-                          <li key={index2}>{`${name} : ${value}`}</li>
+                          <li key={index2} className="hover:font-bold">{`${name} : ${value}`}</li>
                         )
                       )}
                     </ul>
