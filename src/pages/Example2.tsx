@@ -14,7 +14,7 @@ const Example2 = () => {
       .then((data) => {
         if (data) {
           data.forEach((item: any) => {
-            item.department = item.department.replace(/_/g, " ");
+            // item.department = item.department.replace(/_/g, " ");
             if (item.hair) {
               item.hair = Object.entries(item.hair).map(([color, count]) => ({
                 [color]: count,
