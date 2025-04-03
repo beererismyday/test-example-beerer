@@ -86,25 +86,23 @@ const Example1 = () => {
   }, []);
 
   useEffect(() => {
-    setTimer(5);
     if (fruits.length > 0 || vegetables.length > 0) {
       const interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
+        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
       }, 1000);
-
-      const timeout = setTimeout(() => {
-        setList(datas.current);
-        setFruits([]);
-        setVegetables([]);
-        clearInterval(interval);
-      }, 5000);
-
-      return () => {
-        clearTimeout(timeout);
-        clearInterval(interval);
-      };
+  
+      return () => clearInterval(interval);
     }
   }, [fruits, vegetables]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      setList(datas.current);
+      setFruits([]);
+      setVegetables([]);
+      setTimer(5);
+    }
+  }, [timer]);
 
   return (
     <div className="grid grid-flow-row-dense auto-rows-auto gap-5">
