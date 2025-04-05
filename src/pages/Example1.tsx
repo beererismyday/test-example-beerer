@@ -8,7 +8,6 @@ const Example1 = () => {
   const [fruits, setFruits] = useState<any>([]);
   const [vegetables, setVegetables] = useState<any>([]);
   const [list, setList] = useState<any>([]);
-  const [timer, setTimer] = useState<number>(5);
 
   const datas = useRef([
     {
@@ -61,15 +60,15 @@ const Example1 = () => {
     setList((prev: any) => prev.filter((res: any) => res.name !== item?.name));
 
     if (item.type === "Fruit") {
-      setFruits((prev: any) => [...prev, item]);
+      setFruits((prev: any) => [...prev, { ...item, countdown: 5 }]);
     } else {
-      setVegetables((prev: any) => [...prev, item]);
+      setVegetables((prev: any) => [...prev, { ...item, countdown: 5 }]);
     }
   };
 
   const handleMoveBack = (item: any) => {
     setList((prev: any) => [...prev, item]);
-
+    
     if (item.type === "Fruit") {
       setFruits((prev: any) =>
         prev.filter((res: any) => res.name !== item.name)
@@ -86,23 +85,42 @@ const Example1 = () => {
   }, []);
 
   useEffect(() => {
-    if (fruits.length > 0 || vegetables.length > 0) {
-      const interval = setInterval(() => {
-        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
-      }, 1000);
-  
-      return () => clearInterval(interval);
-    }
-  }, [fruits, vegetables]);
+    const timer = setInterval(() => {
+      setFruits((prev: any) => {
+        const itemsToReturn = prev.filter((item: any) => item.countdown === 1);
+        if (itemsToReturn.length > 0) {
+          setList((prevList: any) => {
+            const filteredItems = itemsToReturn.filter(
+              (item: any) =>
+                !prevList.some((listItem: any) => listItem.name === item.name)
+            );
+            return [...prevList, ...filteredItems];
+          });
+        }
+        return prev
+          .map((item: any) => ({ ...item, countdown: item.countdown - 1 }))
+          .filter((item: any) => item.countdown > 0);
+      });
 
-  useEffect(() => {
-    if (timer === 0) {
-      setList(datas.current);
-      setFruits([]);
-      setVegetables([]);
-      setTimer(5);
-    }
-  }, [timer]);
+      setVegetables((prev: any) => {
+        const itemsToReturn = prev.filter((item: any) => item.countdown === 1);
+        if (itemsToReturn.length > 0) {
+          setList((prevList: any) => {
+            const filteredItems = itemsToReturn.filter(
+              (item: any) =>
+                !prevList.some((listItem: any) => listItem.name === item.name)
+            );
+            return [...prevList, ...filteredItems];
+          });
+        }
+        return prev
+          .map((item: any) => ({ ...item, countdown: item.countdown - 1 }))
+          .filter((item: any) => item.countdown > 0);
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  });
 
   return (
     <div className="grid grid-flow-row-dense auto-rows-auto gap-5">
@@ -139,7 +157,15 @@ const Example1 = () => {
                 key={index}
                 className="border-2 border-gray-300 rounded-xl p-3 hover:bg-blue-300/40 hover:text-blue-600 hover:drop-shadow-lg hover:font-semibold cursor-pointer active:bg-blue-300 active:text-white active:border-blue-300"
                 onClick={() => handleMoveBack(item)}>
-                <p className="text-base">{item.name}</p>
+                <p
+                  className={
+                    "text-base" +
+                    (item.countdown <= 2
+                      ? " text-red-400 transform animate-pulse duration-75 ease-in-out"
+                      : "")
+                  }>
+                  {item.name}
+                </p>
               </button>
             ))}
           </div>
@@ -154,23 +180,20 @@ const Example1 = () => {
                 key={index}
                 className="border-2 border-gray-300 rounded-xl p-3 hover:bg-blue-300/40 hover:text-blue-600 hover:drop-shadow-lg hover:font-semibold cursor-pointer active:bg-blue-300 active:text-white active:border-blue-300"
                 onClick={() => handleMoveBack(item)}>
-                <p className="text-base">{item.name}</p>
+                <p
+                  className={
+                    "text-base" +
+                    (item.countdown <= 2
+                      ? " text-red-400 transform animate-pulse duration-75 ease-in-out"
+                      : "")
+                  }>
+                  {item.name}
+                </p>
               </button>
             ))}
           </div>
         </div>
       </div>
-      {(fruits.length > 0 || vegetables.length > 0) && (
-        <div className="absolute bottom-5 right-5">
-          <p className="text-xl">
-            Timer :
-            <span className="transition duration-700 ease-in-out animate-pulse font-semibold text-red-500 px-2">
-              {timer}
-            </span>
-            second
-          </p>
-        </div>
-      )}
     </div>
   );
 };
